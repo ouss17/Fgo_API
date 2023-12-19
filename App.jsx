@@ -25,7 +25,7 @@ import { store } from "./Redux/store";
 
 import LoadingContext from './context/LoadingContext.js';
 
-import { GetRandomServant } from "./Redux/actions/ServantsAction";
+import { GetRandomServant, getAllServantsBasic } from "./Redux/actions/ServantsAction";
 
 import BlackScreen from './components/BlackScreen';
 import FirstScreen from './components/FirstScreen';
@@ -59,11 +59,20 @@ function App() {
   useEffect(() => {
     if (!firstScreen) {
       setFouLoading(true);
-      dispatch(GetRandomServant()).then(() => {
-        setTimeout(() => {
-          setGoBlackScreen(false)
-          setFouLoading(false);
-        }, 1000);
+      dispatch(getAllServantsBasic()).then((res) => {
+        if (res.length > 0) {
+          console.log(res);
+          let random = Math.floor(Math.random() * res.length - 1);
+
+          dispatch(GetRandomServant(res[random].id)).then(() => {
+            setTimeout(() => {
+              setGoBlackScreen(false)
+              setFouLoading(false);
+            }, 1000);
+          });
+        } else {
+          console.log(res);
+        }
       });
     }
   }, [goBlackScreen]);

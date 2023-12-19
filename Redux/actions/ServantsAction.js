@@ -62,29 +62,23 @@ export const GetOneServant = (id) => {
   };
 };
 
-export const GetRandomServant = () => {
+export const GetRandomServant = (id) => {
   return async (dispatch) => {
     try {
-      const res = await axios({
-        url: "https://api.atlasacademy.io/export/JP/basic_servant_lang_en.json",
+
+
+      const res2 = await axios({
+        url: "https://api.atlasacademy.io/nice/NA/servant/" + id + "?lore=true",
         method: "get",
       });
 
-      if (res.data.length > 0) {
-        let random = Math.floor(Math.random() * res.data.length - 1);
+      dispatch({
+        payload: res2.data,
+        type: GET_SERVANT_RANDOM,
+      });
 
-        const res2 = await axios({
-          url: "https://api.atlasacademy.io/nice/NA/servant/" + res.data[random].id + "?lore=true",
-          method: "get",
-        });
 
-        dispatch({
-          payload: res2.data,
-          type: GET_SERVANT_RANDOM,
-        });
-      }
-
-      return res.data;
+      return res2.data;
     } catch (e) {
       console.log(e);
     }

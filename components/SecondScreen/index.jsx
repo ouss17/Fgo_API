@@ -13,15 +13,12 @@ const SecondScreen = () => {
     useEffect(() => {
         setFouLoading(true);
         setTimeout(() => {
-            dispatch(GetAllServantsNice()).then(() => {
-                setTimeout(() => {
 
-                    dispatch(getAllServantsBasic()).then((res) => {
-                        console.log(res.length);
-                    });
-                }, 1000);
+            dispatch(getAllServantsBasic()).then((res) => {
+                console.log(res.length);
             });
         }, 1000);
+
 
     }, []);
 
