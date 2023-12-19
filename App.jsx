@@ -19,9 +19,18 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import logo from './assets/logo_mini.jpeg'
-import secondScreen from './assets/backgrounds/second_screen.jpg'
+import { Provider } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { store } from "./Redux/store";
+
+import LoadingContext from './context/LoadingContext.js';
+
+import { GetRandomServant } from "./Redux/actions/ServantsAction";
+
 import BlackScreen from './components/BlackScreen';
+import FirstScreen from './components/FirstScreen';
+import SecondScreen from './components/SecondScreen';
+import AnimFou from './components/AnimFou';
 
 
 
@@ -34,6 +43,10 @@ function App() {
 
   const [firstScreen, setFirstScreen] = useState(true);
   const [goBlackScreen, setGoBlackScreen] = useState(false);
+  const [fouLoading, setFouLoading] = useState(false)
+
+  const dispatch = useDispatch();
+  const randomServant = useSelector((state) => state.RandomServantReducer)
 
 
   useEffect(() => {
@@ -45,75 +58,63 @@ function App() {
 
   useEffect(() => {
     if (!firstScreen) {
-      setTimeout(() => {
-        setGoBlackScreen(false)
-      }, 1000);
+      setFouLoading(true);
+      dispatch(GetRandomServant()).then(() => {
+        setTimeout(() => {
+          setGoBlackScreen(false)
+          setFouLoading(false);
+        }, 1000);
+      });
     }
-  }, [firstScreen]);
+  }, [goBlackScreen]);
+
+  useEffect(() => {
+    if (randomServant.name) {
+      console.log(randomServant.name);
+
+    }
+  }, [randomServant]);
 
   return (
     <>
-      <StatusBar
-        animated={true}
-        // backgroundColor="#61dafb"
-        // barStyle={statusBarStyle}
-        // showHideTransition={statusBarTransition}
-        hidden={true}
-      />
-      {
+      <LoadingContext.Provider value={{ fouLoading, setFouLoading }}>
+        <StatusBar
+          animated={true}
+          hidden={true}
+        />
+        {
 
-        firstScreen ?
+          firstScreen ?
 
-          <View style={[styles.container]}>
-            <Image style={[styles.logoGame]} source={logo} />
-            <Text style={styles.loadApp}>
-              This is a work of peaktion. It has absolutely no relation to any existing individu or organization.
-            </Text>
-            <Text style={styles.loadApp}>
-              This application can be played for free.
-            </Text>
-          </View>
-          :
-
-          goBlackScreen
-            ?
-            <BlackScreen />
+            <FirstScreen />
             :
-            <ImageBackground
-              style={styles.bg}
-              source={secondScreen}
-              resizeMode="cover"
-            >
-              <SafeAreaView>
 
-              </SafeAreaView>
-            </ImageBackground>
+            goBlackScreen
+              ?
+              <BlackScreen />
+              :
+              <SecondScreen />
 
-      }
-
+        }
+        {
+          fouLoading
+          &&
+          <AnimFou text={"connecting"} />
+        }
+      </LoadingContext.Provider>
     </>
-
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoGame: {
-    width: 175,
-    height: 175,
-    marginVertical: 65
-  },
-  loadApp: {
-    fontWeight: "bold",
-    color: "#080808",
-    fontSize: 10
-  },
-  bg: {
-    flex: 1
-  }
+
+
 });
 
-export default App;
+export default function Main() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
