@@ -11,6 +11,7 @@ const AnimFou = ({ text }) => {
     const [changeText, setChangeText] = useState(text);
     const [imageSource, setImageSource] = useState(fou1);
     const [imageCounter, setImageCounter] = useState(1);
+    const [textWidth, setTextWidth] = useState(0);
 
     const images = [fou2, fou4, fou3, fou1];
 
@@ -34,6 +35,14 @@ const AnimFou = ({ text }) => {
         return () => clearTimeout(timeout);
     }, [dots]);
 
+    // useEffect(() => {
+    //     // Mesurer la largeur du texte
+    //     if (text) {
+    //         setTextWidth(0); // Réinitialisation de la largeur pour s'assurer de la réévaluation
+    //         setTextWidth(Math.ceil((text.length * 22))); // Remplacez 10 par la taille de police utilisée
+    //     }
+    // }, [text]);
+
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -46,10 +55,17 @@ const AnimFou = ({ text }) => {
 
     return (
         <View style={[styles.footerFoo, { width: windowWidth }]}>
-            <Text style={[styles.text]}>{changeText}{dots}</Text>
+            <Text
+                // onLayout={(event) => {
+                //     const { width } = event.nativeEvent.layout;
+                //     if (width !== textWidth) {
+                //         setTextWidth(width);
+                //     }
+                // }}
+                style={[styles.text]}>{changeText}{dots}</Text>
             <Image
                 source={imageSource}
-                style={{ width: 75, height: 75, marginRight: 50 }}
+                style={{ width: 50, height: 50, marginRight: 50, marginLeft: 30 }}
             />
         </View>
     );
@@ -70,8 +86,8 @@ const styles = StyleSheet.create({
         color: "#fff",
         textTransform: "uppercase",
         fontSize: 22,
-        marginRight: 30,
-        width: 200,
+        // marginRight: 30,
+        width: "auto",
         letterSpacing: 3
 
     }

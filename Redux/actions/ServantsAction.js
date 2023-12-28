@@ -2,7 +2,7 @@ import {
   GET_SERVANTS_NICE,
   GET_SERVANT,
   GET_SERVANT_RANDOM,
-  GET_SERVANTS_BASIC
+  GET_SERVANTS_BASIC_NA
 } from "./types";
 import axios from "axios";
 
@@ -19,6 +19,7 @@ export const GetAllServantsNice = () => {
         payload: res.data,
         type: GET_SERVANTS_NICE,
       });
+      return res.data;
     } catch (e) {
       console.log(e);
     }
@@ -37,6 +38,26 @@ export const getAllServantsBasic = (number) => {
         payload: res.data,
         type: GET_SERVANTS_BASIC,
       });
+      return res.data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const getAllServantsBasicNA = (number) => {
+  return async (dispatch) => {
+    try {
+      // const res = await api.get("/airmob/" + number);
+      const res = await axios({
+        url: "https://api.atlasacademy.io/export/NA/basic_servant.json",
+        method: "get",
+      });
+      dispatch({
+        payload: res.data,
+        type: GET_SERVANTS_BASIC_NA,
+      });
+      return res.data;
     } catch (e) {
       console.log(e);
     }
@@ -48,7 +69,7 @@ export const GetOneServant = (id) => {
     try {
       // const res = await api.get("/airmob/dataUsage/" + number + "/" + start + " 00:00:00/" + end + " 00:00:00");
       const res = await axios({
-        url: "https://api.atlasacademy.io/nice/NA/servant/" + id + "?lore=false",
+        url: "https://api.atlasacademy.io/nice/JP/servant/" + id + "?lore=true&lang=en",
         method: "get",
       });
 
@@ -56,6 +77,7 @@ export const GetOneServant = (id) => {
         payload: res.data,
         type: GET_SERVANT,
       });
+      return res.data;
     } catch (e) {
       console.log(e);
     }
@@ -68,7 +90,7 @@ export const GetRandomServant = (id) => {
 
 
       const res2 = await axios({
-        url: "https://api.atlasacademy.io/nice/NA/servant/" + id + "?lore=true",
+        url: "https://api.atlasacademy.io/nice/NA/servant/" + id + "?lore=true&lang=en",
         method: "get",
       });
 
@@ -77,7 +99,7 @@ export const GetRandomServant = (id) => {
         type: GET_SERVANT_RANDOM,
       });
 
-
+      // console.log(res2.data.profile.comments);
       return res2.data;
     } catch (e) {
       console.log(e);

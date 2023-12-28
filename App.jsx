@@ -43,10 +43,10 @@ function App() {
 
   const [firstScreen, setFirstScreen] = useState(true);
   const [goBlackScreen, setGoBlackScreen] = useState(false);
-  const [fouLoading, setFouLoading] = useState(false)
+  const [fouLoading, setFouLoading] = useState({ "load": false, "text": "loading" })
 
   const dispatch = useDispatch();
-  const randomServant = useSelector((state) => state.RandomServantReducer)
+  const basicServants = useSelector((state) => state.AllServantsBasicReducer)
 
 
   useEffect(() => {
@@ -58,31 +58,11 @@ function App() {
 
   useEffect(() => {
     if (!firstScreen) {
-      setFouLoading(true);
-      dispatch(getAllServantsBasic()).then((res) => {
-        if (res.length > 0) {
-          console.log(res);
-          let random = Math.floor(Math.random() * res.length - 1);
+      setFouLoading({ "load": true, "text": "connecting" });
 
-          dispatch(GetRandomServant(res[random].id)).then(() => {
-            setTimeout(() => {
-              setGoBlackScreen(false)
-              setFouLoading(false);
-            }, 1000);
-          });
-        } else {
-          console.log(res);
-        }
-      });
     }
   }, [goBlackScreen]);
 
-  useEffect(() => {
-    if (randomServant.name) {
-      console.log(randomServant.name);
-
-    }
-  }, [randomServant]);
 
   return (
     <>
@@ -100,15 +80,15 @@ function App() {
 
             goBlackScreen
               ?
-              <BlackScreen />
+              <BlackScreen setFouLoading={setFouLoading} chargeRandom={true} setGoBlackScreen={setGoBlackScreen} />
               :
               <SecondScreen />
 
         }
         {
-          fouLoading
+          fouLoading.load
           &&
-          <AnimFou text={"connecting"} />
+          <AnimFou text={fouLoading.text} />
         }
       </LoadingContext.Provider>
     </>
