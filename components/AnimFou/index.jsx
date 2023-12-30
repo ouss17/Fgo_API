@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
         color: "#fff",
         textTransform: "uppercase",
         fontSize: 22,
-        // marginRight: 30,
-        width: "auto",
+        marginRight: 30,
+        width: 200,
         letterSpacing: 3
 
     }
