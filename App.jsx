@@ -31,6 +31,8 @@ import BlackScreen from './components/BlackScreen';
 import FirstScreen from './components/FirstScreen';
 import SecondScreen from './components/SecondScreen';
 import AnimFou from './components/AnimFou';
+import TitleScreen from './components/TitleScreen/index.jsx';
+import BlackScreen2 from './components/BlackScreen2/index.jsx';
 
 
 
@@ -43,11 +45,17 @@ function App() {
 
   const [firstScreen, setFirstScreen] = useState(true);
   const [goBlackScreen, setGoBlackScreen] = useState(false);
+  const [goBlackScreen2, setGoBlackScreen2] = useState(false);
   const [fouLoading, setFouLoading] = useState({ "load": false, "text": "loading" })
 
   const dispatch = useDispatch();
   const basicServants = useSelector((state) => state.AllServantsBasicReducer)
 
+  const [readyTitleScreen, setReadyTitleScreen] = useState(false)
+  const [titleScreens, setTitleScreen] = useState(false)
+
+  const [endLoadScreen, setEndLoadScreen] = useState(false);
+  const [endTitleScreen, setEndTitleScreen] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,6 +70,24 @@ function App() {
 
     }
   }, [goBlackScreen]);
+
+  const [goTitleScreen, setGoTitleScreen] = useState(false)
+
+  useEffect(() => {
+    if (titleScreens) {
+      console.log("please");
+      setEndLoadScreen(true);
+      setGoBlackScreen2(true);
+      setTimeout(() => {
+        setGoBlackScreen2(false);
+        setGoTitleScreen(true);
+      }, 1000);
+
+    } else {
+      console.log("noplease");
+
+    }
+  }, [titleScreens]);
 
 
   return (
@@ -82,8 +108,31 @@ function App() {
               ?
               <BlackScreen setFouLoading={setFouLoading} chargeRandom={true} setGoBlackScreen={setGoBlackScreen} />
               :
-              <SecondScreen />
+              !endLoadScreen
+                ?
+                <SecondScreen readyTitleScreen={readyTitleScreen} setReadyTitleScreen={setReadyTitleScreen} setTitleScreen={setTitleScreen} />
+                :
+                <></>
 
+
+
+        }
+        {
+          goTitleScreen
+            ?
+
+            goBlackScreen2
+              ?
+              <BlackScreen2 />
+
+              :
+              !endTitleScreen
+                ?
+                <TitleScreen />
+                :
+                <></>
+            :
+            <></>
         }
         {
           fouLoading.load
