@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, ImageBackground, SafeAreaView, Text, Dimensions } from 'react-native';
+import { View, StyleSheet, ImageBackground, SafeAreaView, Text, Dimensions, TouchableOpacity, Pressable } from 'react-native';
 import secondScreen from '../../assets/backgrounds/second_screen.jpg'
 import loadingContext from '../../context/LoadingContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetAllServantsNice, getAllServantsBasic } from '../../Redux/actions/ServantsAction';
 
-const SecondScreen = () => {
+const SecondScreen = ({ readyTitleScreen,
+    setReadyTitleScreen,
+    setTitleScreen }) => {
 
     const windowHeight = Dimensions.get('window').height;
 
@@ -14,6 +16,15 @@ const SecondScreen = () => {
     const dispatch = useDispatch();
     const randomServant = useSelector((state) => state.RandomServantReducer)
 
+    const GoToTitleScreen = () => {
+        console.log("allez");
+        if (readyTitleScreen) {
+            setTitleScreen(true);
+            console.log("go");
+
+        }
+    }
+
     useEffect(() => {
         setFouLoading({ "load": true, "text": "loading" });
         setTimeout(() => {
@@ -21,6 +32,7 @@ const SecondScreen = () => {
             dispatch(GetAllServantsNice()).then((res) => {
                 setFouLoading({ "load": false, text: "loading" });
                 setTimeout(() => {
+                    setReadyTitleScreen(true);
                     setTextTap(true);
                 }, 300);
 
@@ -30,22 +42,17 @@ const SecondScreen = () => {
 
     }, []);
 
-    useEffect(() => {
-        randomServant.id &&
-            console.log(randomServant.profile.comments[0].comment.length);
+    // useEffect(() => {
+    //     randomServant.id &&
+    //         console.log(randomServant.profile.comments[0].comment.length);
 
-        // randomServant.profile.comments.forEach(comment => {
-        //     console.log(comment.comment);
-        //     console.log("PERIOD PERIOD");
+    //     // randomServant.profile.comments.forEach(comment => {
+    //     //     console.log(comment.comment);
+    //     //     console.log("PERIOD PERIOD");
 
-        // });
-    }, [randomServant]);
+    //     // });
+    // }, [randomServant]);
 
-    const [result, setResult] = useState("");
-
-    useEffect(() => {
-        console.log(result, "RESULT");
-    }, [result])
 
     return (
         <ImageBackground
@@ -56,14 +63,14 @@ const SecondScreen = () => {
             <>
                 {
                     randomServant.id &&
-                    <View style={[{ height: windowHeight }]}>
+                    <Pressable style={[{ height: windowHeight }]} onPress={() => GoToTitleScreen()}>
                         <View style={[styles.servant]}>
                             <Text style={[styles.title]}>SERVANT</Text>
                             <Text style={[styles.servantName]}>{randomServant.name}</Text>
                             <Text style={[styles.servantClass]}>Class: {randomServant.className}</Text>
                         </View>
                         <View style={[styles.info]}>
-                            <Text style={[styles.servantInfo, { width: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? "80%" : "60%", fontSize: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? 13 : 18 }]}>{randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment}</Text>
+                            <Text style={[styles.servantInfo, { width: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? "80%" : "60%", fontSize: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? 12 : 18 }]}>{randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment}</Text>
                         </View>
                         {
                             textTap &&
@@ -71,7 +78,7 @@ const SecondScreen = () => {
                                 <Text style={[styles.textTap]}>Please Tap the Screen</Text>
                             </View>
                         }
-                    </View>
+                    </Pressable>
                 }
 
             </>
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
     tap: {
         alignItems: "center",
         position: "absolute",
-        bottom: 20,
+        bottom: 25,
         right: 50,
         left: 50
     },

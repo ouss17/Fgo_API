@@ -2,7 +2,8 @@ import {
   GET_SERVANTS_NICE,
   GET_SERVANT,
   GET_SERVANT_RANDOM,
-  GET_SERVANTS_BASIC_NA
+  GET_SERVANTS_BASIC_NA,
+  GET_SERVANTS_BASIC
 } from "./types";
 import axios from "axios";
 
@@ -19,6 +20,7 @@ export const GetAllServantsNice = () => {
         payload: res.data,
         type: GET_SERVANTS_NICE,
       });
+      console.log(res.data.length);
       return res.data;
     } catch (e) {
       console.log(e);
