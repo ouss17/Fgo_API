@@ -75,16 +75,12 @@ function App() {
 
   useEffect(() => {
     if (titleScreens) {
-      console.log("please");
       setEndLoadScreen(true);
       setGoBlackScreen2(true);
       setTimeout(() => {
         setGoBlackScreen2(false);
         setGoTitleScreen(true);
       }, 1000);
-
-    } else {
-      console.log("noplease");
 
     }
   }, [titleScreens]);

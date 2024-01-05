@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, ImageBackground, SafeAreaView, Text, Dimensions, TouchableOpacity, Pressable } from 'react-native';
+import { View, StyleSheet, ImageBackground, SafeAreaView, Text, Dimensions, TouchableOpacity, Pressable, ScrollView } from 'react-native';
 import secondScreen from '../../assets/backgrounds/second_screen.jpg'
 import loadingContext from '../../context/LoadingContext';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,10 +17,8 @@ const SecondScreen = ({ readyTitleScreen,
     const randomServant = useSelector((state) => state.RandomServantReducer)
 
     const GoToTitleScreen = () => {
-        console.log("allez");
         if (readyTitleScreen) {
             setTitleScreen(true);
-            console.log("go");
 
         }
     }
@@ -61,25 +59,28 @@ const SecondScreen = ({ readyTitleScreen,
             resizeMode="cover"
         >
             <>
-                {
-                    randomServant.id &&
-                    <Pressable style={[{ height: windowHeight }]} onPress={() => GoToTitleScreen()}>
-                        <View style={[styles.servant]}>
-                            <Text style={[styles.title]}>SERVANT</Text>
-                            <Text style={[styles.servantName]}>{randomServant.name}</Text>
-                            <Text style={[styles.servantClass]}>Class: {randomServant.className}</Text>
-                        </View>
-                        <View style={[styles.info]}>
-                            <Text style={[styles.servantInfo, { width: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? "80%" : "60%", fontSize: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? 12 : 18 }]}>{randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment}</Text>
-                        </View>
-                        {
-                            textTap &&
-                            <View style={[styles.tap]}>
-                                <Text style={[styles.textTap]}>Please Tap the Screen</Text>
+                <ScrollView>
+                    {
+
+                        randomServant.id &&
+                        <Pressable style={[{ height: windowHeight }]} onPress={() => GoToTitleScreen()}>
+                            <View style={[styles.servant]}>
+                                <Text style={[styles.title]}>SERVANT</Text>
+                                <Text style={[styles.servantName]}>{randomServant.name}</Text>
+                                <Text style={[styles.servantClass]}>Class: {randomServant.className}</Text>
                             </View>
-                        }
-                    </Pressable>
-                }
+                            <ScrollView style={[styles.info]}>
+                                <Text style={[styles.servantInfo, { width: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? "80%" : "70%", height: 200, overflow: "scroll", fontSize: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? 15 : 18 }]}>{randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment}</Text>
+                            </ScrollView>
+                            {
+                                textTap &&
+                                <View style={[styles.tap]}>
+                                    <Text style={[styles.textTap]}>Please Tap the Screen</Text>
+                                </View>
+                            }
+                        </Pressable>
+                    }
+                </ScrollView>
 
             </>
         </ImageBackground>
@@ -116,7 +117,10 @@ const styles = StyleSheet.create({
         width: 700
     },
     info: {
-        alignItems: "center"
+        // display: "flex",
+        // alignItems: "center"
+        marginLeft: 75,
+        // marginRight: 50
     },
     servantInfo: {
         color: "white",
