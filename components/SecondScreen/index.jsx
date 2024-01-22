@@ -40,6 +40,16 @@ const SecondScreen = ({ readyTitleScreen,
 
     }, []);
 
+    // const [kawa, setKawa] = useState(`"Kama? She's rather charming theses days, don't you think?"{"\n"}
+    //                                 In an act of retaliation against Pãrvatî and others' disagreeably warm comments, the dog of love has awakened as the Demon King Mara (or so she claims).{"\n"}{"\n"}
+
+    //                                 Summer is full of temtation. 'Tis the season of depravity.{"\n"}
+    //                                 What kind of Demon King would she be if she doesn't assert her presence? Newly motivated, she changes into a cute swimsuit and tries even more aggressively than usual to corrupt her Master...{"\n"}{"\n"}
+
+    //                                 "What do you think? This is the true form of the summer Demon King Mara. Scared that you might accidentally get corrupted?"{"\n"}{"\n"}
+
+    //                                 Everyone nodded, agreeing that it is indeed terrifying that she's no different than the usual Kama.`)
+
     // useEffect(() => {
     //     randomServant.id &&
     //         console.log(randomServant.profile.comments[0].comment.length);
@@ -69,9 +79,9 @@ const SecondScreen = ({ readyTitleScreen,
                                 <Text style={[styles.servantName]}>{randomServant.name}</Text>
                                 <Text style={[styles.servantClass]}>Class: {randomServant.className}</Text>
                             </View>
-                            <ScrollView style={[styles.info]}>
-                                <Text style={[styles.servantInfo, { width: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? "80%" : "70%", height: 200, overflow: "scroll", fontSize: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? 15 : 18 }]}>{randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment}</Text>
-                            </ScrollView>
+                            <View style={[styles.info]}>
+                                <Text style={[styles.servantInfo, { width: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? "60%" : "60%", fontSize: (randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment.length > 500) ? 13 : 18 }]}>{randomServant.profile.comments.length > 0 && randomServant.profile.comments[0].comment}</Text>
+                            </View>
                             {
                                 textTap &&
                                 <View style={[styles.tap]}>
@@ -79,6 +89,30 @@ const SecondScreen = ({ readyTitleScreen,
                                 </View>
                             }
                         </Pressable>
+                        // <Pressable style={[{ height: windowHeight }]} onPress={() => GoToTitleScreen()}>
+                        //     <View style={[styles.servant]}>
+                        //         <Text style={[styles.title]}>SERVANT</Text>
+                        //         <Text style={[styles.servantName]}>Kama (Avenger)</Text>
+                        //         <Text style={[styles.servantClass]}>Class: Avenger</Text>
+                        //     </View>
+                        //     <View style={[styles.info]}>
+                        //         <Text style={[styles.servantInfo, { width: (kawa.length > 0 && kawa.length > 500) ? "60%" : "60%", fontSize: (kawa.length > 0 && kawa.length > 500) ? 13 : 18 }]}>"Kama? She's rather charming theses days, don't you think?"{"\n"}
+                        //             In an act of retaliation against Pãrvatî and others' disagreeably warm comments, the dog of love has awakened as the Demon King Mara (or so she claims).{"\n"}{"\n"}
+
+                        //             Summer is full of temtation. 'Tis the season of depravity.{"\n"}
+                        //             What kind of Demon King would she be if she doesn't assert her presence? Newly motivated, she changes into a cute swimsuit and tries even more aggressively than usual to corrupt her Master...{"\n"}{"\n"}
+
+                        //             "What do you think? This is the true form of the summer Demon King Mara. Scared that you might accidentally get corrupted?"{"\n"}{"\n"}
+
+                        //             Everyone nodded, agreeing that it is indeed terrifying that she's no different than the usual Kama.</Text>
+                        //     </View>
+                        //     {
+                        //         textTap &&
+                        //         <View style={[styles.tap]}>
+                        //             <Text style={[styles.textTap]}>Please Tap the Screen</Text>
+                        //         </View>
+                        //     }
+                        // </Pressable>
                     }
                 </ScrollView>
 
@@ -100,7 +134,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 23,
         letterSpacing: 5,
-        fontFamily: "georgia"
+        fontFamily: "georgia",
+        // marginBottom: 0
     },
     servantName: {
         color: "white",
@@ -117,9 +152,9 @@ const styles = StyleSheet.create({
         width: 700
     },
     info: {
-        // display: "flex",
-        // alignItems: "center"
-        marginLeft: 75,
+        display: "flex",
+        alignItems: "center",
+        // marginLeft: 75,
         // marginRight: 50
     },
     servantInfo: {
